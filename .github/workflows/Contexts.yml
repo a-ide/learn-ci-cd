@@ -1,0 +1,16 @@
+name: Contexts
+on: push
+jobs:
+  print1:
+    runs-on: ubuntu-latest
+    env:
+      USERNAME: ${{vars.USERNAME}}
+    steps:
+      - run: echo "${USERNAME}"
+  print2:
+    runs-on: ubuntu-latest
+    env:
+      PASSWORD: ${{secrets.PASSWORD}}
+    steps:
+      - run: echo "${PASSWORD}"
+      - run: echo "${PASSWORD:0:1} ${PASSWORD#?}"

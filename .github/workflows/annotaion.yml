@@ -1,15 +1,22 @@
-name: Parallel jobs
+name: Matrix
 on: push
 jobs:
-  first:
-    runs-on: ubuntu-latest
+  print:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    runs-on: ${{matrix.os}}
     steps:
-      - run: sleep 10 && echo "First job"
-  second:
-    runs-on: ubuntu-latest
+      - run: echo "${RUNNER_OS}"
+        shell: bash
+  print2:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+        version: [18, 20]
+    runs-on: ${{matrix.os}}
     steps:
-      - run: sleep 10 && echo "Second job"
-  third:
-    runs-on: ubuntu-latest
-    steps:
-      - run: sleep 10 && echo "Third job"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{matrix.version}}
+      - run: echo "$RUNNER_OS" && node --version
